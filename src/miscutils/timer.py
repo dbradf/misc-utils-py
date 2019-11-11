@@ -14,6 +14,7 @@ def timer(logger=LOGGER, details: bool = False):
     :param logger: structlog logger to write to.
     :param details: include function parameters in log.
     """
+
     def decorator(fn: Callable):
         def measure_time(*args, **kwargs):
             start_time = datetime.now()
