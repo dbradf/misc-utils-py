@@ -58,6 +58,10 @@ setup(
         "Programming Language :: Python :: Implementation :: CPython",
         "Programming Language :: Python :: Implementation :: PyPy",
     ],
-    install_requires=["pylibversion >= 0.1", "python-json-logger >= 0.1", "structlog >= 19"],
+    install_requires=[
+        "pylibversion >= 0.1",
+        "python-json-logger >= 0.1",
+        "structlog >= 19"
+    ],
     entry_points={"console_scripts": []},
 )
