@@ -31,12 +31,10 @@ class TestDefaultConfiguration:
         mock_configure.assert_called_once()
 
     @patch("structlog.configure")
-    @patch("logging.config.dictConfig")
-    def test_json_logging(self, mock_dict_config, mock_configure):
+    def test_json_logging(self, mock_configure):
         under_test.default_logging(
             under_test.Verbosity.WARNING, log_format=under_test.LogFormat.JSON
         )
-        mock_dict_config.assert_called_once()
         mock_configure.assert_called_once()
 
     @patch("logging.getLogger")
@@ -48,3 +46,12 @@ class TestDefaultConfiguration:
         )
         mock_get_logger.assert_called_with("some_external_log")
         mock_get_logger.return_value.setLevel.assert_called_with(logging.WARNING)
+
+    @patch("logging.getLogger")
+    def test_override_logs(self, mock_get_logger):
+        under_test.default_logging(
+            under_test.Verbosity.DEBUG,
+            under_test.LogFormat.JSON,
+            override_logs=["some_log_needing_override"],
+        )
+        mock_get_logger.assert_called_with("some_log_needing_override")
