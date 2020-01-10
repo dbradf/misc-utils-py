@@ -36,6 +36,7 @@ class Verbosity(IntEnum):
         v = self.value
         return VERBOSE_LEVELS[v] if v < len(VERBOSE_LEVELS) else VERBOSE_LEVELS[-1]
 
+
 def add_line_no(logger, method_name, event_dict):
     """
     Add the line number to the event dict.
@@ -44,6 +45,7 @@ def add_line_no(logger, method_name, event_dict):
     if record is not None:
         event_dict["lineno"] = record.lineno
     return event_dict
+
 
 def add_file_name(logger, method_name, event_dict):
     """
@@ -54,17 +56,6 @@ def add_file_name(logger, method_name, event_dict):
         event_dict["filename"] = record.filename
     return event_dict
 
-
-pre_chain = [
-    add_line_no,
-    add_file_name,
-    structlog.stdlib.add_logger_name,
-    structlog.stdlib.add_log_level,
-    structlog.stdlib.PositionalArgumentsFormatter(),
-    structlog.processors.StackInfoRenderer(),
-    structlog.processors.format_exc_info,
-    structlog.processors.UnicodeDecoder(),
-]
 
 
 def default_logging(
@@ -92,9 +83,26 @@ def default_logging(
             logger_factory=structlog.stdlib.LoggerFactory(),
             wrapper_class=structlog.stdlib.BoundLogger,
             cache_logger_on_first_use=True,
-            processors=pre_chain,
+            processors=[
+                structlog.stdlib.filter_by_level,
+                structlog.stdlib.PositionalArgumentsFormatter(),
+                structlog.processors.StackInfoRenderer(),
+                structlog.processors.format_exc_info,
+                structlog.processors.UnicodeDecoder(),
+                structlog.stdlib.ProcessorFormatter.wrap_for_formatter,
+            ],
         )
     elif log_format == LogFormat.JSON:
+        pre_chain = [
+            add_line_no,
+            add_file_name,
+            structlog.stdlib.add_logger_name,
+            structlog.stdlib.add_log_level,
+            structlog.stdlib.PositionalArgumentsFormatter(),
+            structlog.processors.StackInfoRenderer(),
+            structlog.processors.format_exc_info,
+            structlog.processors.UnicodeDecoder(),
+        ]
         structlog.configure(
             context_class=structlog.threadlocal.wrap_dict(dict),
             logger_factory=structlog.stdlib.LoggerFactory(),
