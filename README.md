@@ -65,20 +65,20 @@ class TestStuff:
         patched.assert_called_once()
 ```
 
-## Testing
+## Development Guide
+
+This project uses [poetry](https://python-poetry.org/):
+
+```
+$ pip install poetry
+$ cd to/project/root
+$ poetry install
+```
+
+### Testing
 
 Testing is done via pytest.
 
 ```
-$ pip install -r requirements.txt
-$ pytest
+$ poetry run pytest
 ```
-
-To get code coverage information, you can run pytest directly.
-
-```
-$ pip install -r requirements.txt
-$ pytest --cov=src --cov-report=html
-```
-
-This will generate an html coverage report in `htmlcov/` directory.
