@@ -56,7 +56,7 @@ class StructlogReqestMiddleware(BaseHTTPMiddleware):
         try:
             response = await call_next(request)
         except Exception as e:
-            self.__log("Exception", exc_info=True)
+            self.__log("Exception Occurred", exc_info=True)
             response = JSONResponse(
                 {"error": str(e)}, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
             )

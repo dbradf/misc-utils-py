@@ -65,6 +65,35 @@ class TestStuff:
         patched.assert_called_once()
 ```
 
+### Starlette Structlog middleware 
+
+Middleware for [Starlette](https://www.starlette.io/) framework to log HTTP 
+requests to structlog. Log entries will be made at the start and end of
+each request. Error requests (400s and 500s) will also be logged. Any 
+calls that throw exceptions will be converted 500 responses.
+
+```python
+from miscutils.middleware import StructlogRequestMiddleware
+import structlog
+
+app.add_middleware(StructlogRequestMiddleware(structlog.get_logger(__name__)))
+```
+
+There are options to customize the logging:
+
+```python
+import logging
+
+import structlog
+from miscutils.middleware import StructlogRequestMiddleware
+
+app.add_middleware(StructlogRequestMiddleware(
+    structlog.get_logger(__name__),
+    log_level=logging.DEBUG,  # Log at the DEBUG level.
+    ignored_status_codes: {404},  # Do not log 404 errors.
+))
+```
+
 ## Development Guide
 
 This project uses [poetry](https://python-poetry.org/):
