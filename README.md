@@ -1,3 +1,6 @@
+# Deprecated - This has been replace by https://github.com/mongodb-labs/python-service-tools
+
+
 # python-service-tools
 
 Utilities for working with python services.
